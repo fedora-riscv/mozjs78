@@ -7,7 +7,7 @@
 %global require_tests     1
 
 %if 0%{?build_with_lto}
-# LTO is default since F33
+# LTO is default since F33 and F32 package is backported as is, so no LTO there
 %else
 %define _lto_cflags %{nil}
 %endif
@@ -24,7 +24,7 @@
 
 Name:           mozjs%{major}
 Version:        78.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -45,6 +45,9 @@ Patch12:        emitter.patch
 Patch14:        init_patch.patch
 # TODO: Check with mozilla for cause of these fails and re-enable spidermonkey compile time checks if needed
 Patch15:        spidermonkey_checks_disable.patch
+
+# Backport fix for https://bugzilla.mozilla.org/show_bug.cgi?id=1654696
+Patch16:        CodeCoverage.patch
 
 # armv7 fixes
 Patch17:        armv7_disable_WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS.patch
@@ -67,6 +70,7 @@ BuildRequires:  perl-devel
 BuildRequires:  pkgconfig(libffi)
 BuildRequires:  pkgconfig(zlib)
 BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
 BuildRequires:  python3-six
 BuildRequires:  readline-devel
 BuildRequires:  zip
@@ -102,6 +106,8 @@ pushd ../..
 %patch14 -p1
 %patch15 -p1
 
+%patch16 -p1
+
 %ifarch armv7hl
 # Disable WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS as it causes the compilation to fail
 # https://bugzilla.mozilla.org/show_bug.cgi?id=1526653
@@ -123,7 +129,7 @@ popd
 rm -rf ../../modules/zlib
 
 %build
-# Prefer GCC, because clang doesn't support -fstack-clash-protection yet
+# Prefer GCC for now
 export CC=gcc
 export CXX=g++
 
@@ -132,6 +138,11 @@ export CXX=g++
 # error: could not compile `jsrust`.
 # https://github.com/japaric/cargo-call-stack/issues/25
 export RUSTFLAGS="-C embed-bitcode"
+
+%if 0%{?build_with_lto}
+# https://github.com/ptomato/mozjs/commit/36bb7982b41e0ef9a65f7174252ab996cd6777bd
+export CARGO_PROFILE_RELEASE_LTO=true
+%endif
 
 export CFLAGS="%{optflags}"
 export CXXFLAGS="$CFLAGS"
@@ -243,5 +254,10 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Mon Aug 17 2020 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.1.0-2
+- Add BR: python3-setuptools
+- Backport fix for https://bugzilla.mozilla.org/show_bug.cgi?id=1654696
+- Set CARGO_PROFILE_RELEASE_LTO=true
+
 * Tue Jul 28 2020 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.1.0-1
 - Initial mozjs78 package based on mozjs68
