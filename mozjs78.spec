@@ -23,8 +23,8 @@
 %endif
 
 Name:           mozjs%{major}
-Version:        78.1.0
-Release:        2%{?dist}
+Version:        78.2.0
+Release:        1%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -45,9 +45,6 @@ Patch12:        emitter.patch
 Patch14:        init_patch.patch
 # TODO: Check with mozilla for cause of these fails and re-enable spidermonkey compile time checks if needed
 Patch15:        spidermonkey_checks_disable.patch
-
-# Backport fix for https://bugzilla.mozilla.org/show_bug.cgi?id=1654696
-Patch16:        CodeCoverage.patch
 
 # armv7 fixes
 Patch17:        armv7_disable_WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS.patch
@@ -105,8 +102,6 @@ pushd ../..
 
 %patch14 -p1
 %patch15 -p1
-
-%patch16 -p1
 
 %ifarch armv7hl
 # Disable WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS as it causes the compilation to fail
@@ -254,6 +249,9 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Mon Aug 24 2020 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.2.0-1
+- Update to 78.2.0
+
 * Mon Aug 17 2020 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.1.0-2
 - Add BR: python3-setuptools
 - Backport fix for https://bugzilla.mozilla.org/show_bug.cgi?id=1654696
