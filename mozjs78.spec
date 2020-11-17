@@ -23,7 +23,7 @@
 %endif
 
 Name:           mozjs%{major}
-Version:        78.4.0
+Version:        78.5.0
 Release:        1%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
@@ -61,7 +61,6 @@ BuildRequires:  gcc-c++
 BuildRequires:  nasm
 BuildRequires:  llvm
 BuildRequires:  llvm-devel
-BuildRequires:  icu
 BuildRequires:  rust
 BuildRequires:  perl-devel
 BuildRequires:  pkgconfig(libffi)
@@ -71,6 +70,11 @@ BuildRequires:  python3-setuptools
 BuildRequires:  python3-six
 BuildRequires:  readline-devel
 BuildRequires:  zip
+
+%if 0%{?big_endian}
+BuildRequires:  icu
+%endif
+
 %if 0%{?system_libatomic}
 BuildRequires:  libatomic
 %endif
@@ -153,7 +157,8 @@ autoconf-2.13
   --with-intl-api \
   --enable-readline \
   --enable-shared-js \
-  --disable-optimize \
+  --enable-optimize \
+  --disable-debug \
   --enable-pie \
   --disable-jemalloc
 
@@ -249,6 +254,10 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Tue Nov 17 2020 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.5.0-1
+- Update to 78.5.0
+- Build with: --enable-optimize, --disable-debug
+
 * Mon Oct 19 2020 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.4.0-1
 - Update to 78.4.0
 
