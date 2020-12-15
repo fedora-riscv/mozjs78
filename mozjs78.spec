@@ -23,7 +23,7 @@
 %endif
 
 Name:           mozjs%{major}
-Version:        78.5.0
+Version:        78.6.0
 Release:        1%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
@@ -254,6 +254,9 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Tue Dec 15 2020 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.6.0-1
+- Update to 78.6.0
+
 * Tue Nov 17 2020 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.5.0-1
 - Update to 78.5.0
 - Build with: --enable-optimize, --disable-debug
