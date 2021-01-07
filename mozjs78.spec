@@ -53,6 +53,7 @@ Patch17:        armv7_disable_WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS.patch
 Patch18:        spidermonkey_style_check_disable_s390x.patch
 Patch19:        0001-Skip-failing-tests-on-ppc64-and-s390x.patch
 
+BuildRequires: make
 BuildRequires:  autoconf213
 BuildRequires:  cargo
 BuildRequires:  clang-devel
