@@ -24,7 +24,7 @@
 
 Name:           mozjs%{major}
 Version:        78.8.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -63,7 +63,9 @@ BuildRequires:  cargo
 BuildRequires:  clang-devel
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
+%if !0%{?rhel}
 BuildRequires:  nasm
+%endif
 BuildRequires:  llvm
 BuildRequires:  llvm-devel
 BuildRequires:  rust
@@ -262,6 +264,9 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Tue Feb 23 2021 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.8.0-2
+- Don't BR nasm on RHEL
+
 * Tue Feb 23 2021 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.8.0-1
 - Update to 78.8.0
 - Add fix for MOZBZ#1644600
