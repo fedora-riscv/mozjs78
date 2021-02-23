@@ -23,7 +23,7 @@
 %endif
 
 Name:           mozjs%{major}
-Version:        78.7.0
+Version:        78.8.0
 Release:        1%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
@@ -53,7 +53,11 @@ Patch17:        armv7_disable_WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS.patch
 Patch18:        spidermonkey_style_check_disable_s390x.patch
 Patch19:        0001-Skip-failing-tests-on-ppc64-and-s390x.patch
 
-BuildRequires: make
+# Fix for https://bugzilla.mozilla.org/show_bug.cgi?id=1644600 ( SharedArrayRawBufferRefs is not exported )
+# https://github.com/0ad/0ad/blob/83e81362d850cc6f2b3b598255b873b6d04d5809/libraries/source/spidermonkey/FixSharedArray.diff
+Patch30:        FixSharedArray.diff
+
+BuildRequires:  make
 BuildRequires:  autoconf213
 BuildRequires:  cargo
 BuildRequires:  clang-devel
@@ -120,6 +124,9 @@ pushd ../..
 
 # Fixes for ppc64 and s390x, there is no need to keep it in ifarch here since mozilla tests support ifarch conditions
 %patch19 -p1
+
+# Export SharedArrayRawBufferRefs
+%patch30 -p1
 
 # Copy out the LICENSE file
 cp LICENSE js/src/
@@ -255,6 +262,10 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Tue Feb 23 2021 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.8.0-1
+- Update to 78.8.0
+- Add fix for MOZBZ#1644600
+
 * Tue Jan 26 2021 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.7.0-1
 - Update to 78.7.0
 
