@@ -1,6 +1,6 @@
 --- a/js/public/StructuredClone.h
 +++ b/js/public/StructuredClone.h
-@@ -328,7 +328,7 @@
+@@ -381,7 +381,7 @@ enum OwnTransferablePolicy {
  namespace js {
  class SharedArrayRawBuffer;
 

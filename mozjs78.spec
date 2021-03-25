@@ -23,8 +23,8 @@
 %endif
 
 Name:           mozjs%{major}
-Version:        78.8.0
-Release:        2%{?dist}
+Version:        78.9.0
+Release:        1%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -47,7 +47,7 @@ Patch14:        init_patch.patch
 Patch15:        spidermonkey_checks_disable.patch
 
 # armv7 fixes
-Patch17:        armv7_disable_WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS.patch
+Patch17:        definitions_for_user_vfp.patch
 
 # s390x/ppc64 fixes, TODO: file bug report upstream?
 Patch18:        spidermonkey_style_check_disable_s390x.patch
@@ -115,7 +115,7 @@ pushd ../..
 %patch15 -p1
 
 %ifarch armv7hl
-# Disable WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS as it causes the compilation to fail
+# Include definitions for user vfp on armv7 as it causes the compilation to fail without them
 # https://bugzilla.mozilla.org/show_bug.cgi?id=1526653
 %patch17 -p1
 %endif
@@ -264,6 +264,11 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Thu Mar 25 2021 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.9.0-1
+- Update to 78.9.0
+- Rebase patches
+- Replace armv7_disable_WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS with patch from Debian to include vfp defs
+
 * Tue Feb 23 2021 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.8.0-2
 - Don't BR nasm on RHEL
 

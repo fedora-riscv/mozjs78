@@ -1,10 +1,9 @@
 --- a/config/run_spidermonkey_checks.py
 +++ b/config/run_spidermonkey_checks.py
-@@ -11,5 +11,5 @@
-     for script in scripts:
+@@ -13,4 +13,5 @@ def main(output, lib_file, *scripts):
          retcode = subprocess.call(
              [sys.executable, script], cwd=buildconfig.topsrcdir)
--        if retcode != 0:
+         if retcode != 0:
 -            raise Exception(script + " failed")
-+        #if retcode != 0:
-+        #    raise Exception(script + " failed")
++            #raise Exception(script + " failed")
++            pass

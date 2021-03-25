@@ -13,7 +13,7 @@ diff --git a/intl/icu_sources_data.py b/intl/icu_sources_data.py
 index 98c0ccb..8cf9290 100644
 --- a/intl/icu_sources_data.py
 +++ b/intl/icu_sources_data.py
-@@ -21,7 +21,9 @@
+@@ -22,7 +22,9 @@ import subprocess
  import sys
  import tempfile
 
