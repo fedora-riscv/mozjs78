@@ -24,7 +24,7 @@
 
 Name:           mozjs%{major}
 Version:        78.9.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -264,6 +264,9 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Tue Mar 30 2021 Jonathan Wakely <jwakely@redhat.com> - 78.9.0-2
+- Rebuilt for removed libstdc++ symbol (#1937698)
+
 * Thu Mar 25 2021 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.9.0-1
 - Update to 78.9.0
 - Rebase patches
