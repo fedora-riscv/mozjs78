@@ -24,7 +24,7 @@
 
 Name:           mozjs%{major}
 Version:        78.9.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -56,9 +56,10 @@ Patch19:        0001-Skip-failing-tests-on-ppc64-and-s390x.patch
 # Fix for https://bugzilla.mozilla.org/show_bug.cgi?id=1644600 ( SharedArrayRawBufferRefs is not exported )
 # https://github.com/0ad/0ad/blob/83e81362d850cc6f2b3b598255b873b6d04d5809/libraries/source/spidermonkey/FixSharedArray.diff
 Patch30:        FixSharedArray.diff
+Patch31:        0002-D89554-autoconf1.diff
+Patch32:        0003-D94538-autoconf2.diff
 
 BuildRequires:  make
-BuildRequires:  autoconf213
 BuildRequires:  cargo
 BuildRequires:  clang-devel
 BuildRequires:  gcc
@@ -129,6 +130,8 @@ pushd ../..
 
 # Export SharedArrayRawBufferRefs
 %patch30 -p1
+%patch31 -p1 -b .autoconf213
+%patch32 -p1 -b .autoconf213-2
 
 # Copy out the LICENSE file
 cp LICENSE js/src/
@@ -158,7 +161,6 @@ export CXXFLAGS="$CFLAGS"
 export LINKFLAGS="%{?__global_ldflags}"
 export PYTHON="%{__python3}"
 
-autoconf-2.13
 %configure \
   --without-system-icu \
   --with-system-zlib \
@@ -264,6 +266,9 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Mon Apr 12 2021 Jan Horak <jhorak@redhat.com> - 78.9.0-3
+- Removed autoconf213 dependency
+
 * Tue Mar 30 2021 Jonathan Wakely <jwakely@redhat.com> - 78.9.0-2
 - Rebuilt for removed libstdc++ symbol (#1937698)
 
