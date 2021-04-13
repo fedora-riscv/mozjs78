@@ -60,6 +60,7 @@ Patch31:        0002-D89554-autoconf1.diff
 Patch32:        0003-D94538-autoconf2.diff
 
 BuildRequires:  make
+BuildRequires:  m4
 BuildRequires:  cargo
 BuildRequires:  clang-devel
 BuildRequires:  gcc
