@@ -56,15 +56,18 @@ Patch19:        0001-Skip-failing-tests-on-ppc64-and-s390x.patch
 # Fix for https://bugzilla.mozilla.org/show_bug.cgi?id=1644600 ( SharedArrayRawBufferRefs is not exported )
 # https://github.com/0ad/0ad/blob/83e81362d850cc6f2b3b598255b873b6d04d5809/libraries/source/spidermonkey/FixSharedArray.diff
 Patch30:        FixSharedArray.diff
+
+# Avoid autoconf213 dependency, backported from upstream
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1663863
 Patch31:        0002-D89554-autoconf1.diff
 Patch32:        0003-D94538-autoconf2.diff
 
-BuildRequires:  make
-BuildRequires:  m4
 BuildRequires:  cargo
 BuildRequires:  clang-devel
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
+BuildRequires:  m4
+BuildRequires:  make
 %if !0%{?rhel}
 BuildRequires:  nasm
 %endif
@@ -131,6 +134,8 @@ pushd ../..
 
 # Export SharedArrayRawBufferRefs
 %patch30 -p1
+
+# Avoid autoconf213 dependency
 %patch31 -p1 -b .autoconf213
 %patch32 -p1 -b .autoconf213-2
 
