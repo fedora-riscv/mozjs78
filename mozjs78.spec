@@ -23,8 +23,8 @@
 %endif
 
 Name:           mozjs%{major}
-Version:        78.9.0
-Release:        3%{?dist}
+Version:        78.10.0
+Release:        1%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -272,6 +272,9 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Tue Apr 20 2021 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.10.0-1
+- Update to 78.10.0
+
 * Mon Apr 12 2021 Jan Horak <jhorak@redhat.com> - 78.9.0-3
 - Removed autoconf213 dependency
 
