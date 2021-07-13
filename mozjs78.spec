@@ -24,7 +24,7 @@
 
 Name:           mozjs%{major}
 Version:        78.12.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -42,6 +42,7 @@ Patch10:        icu_sources_data-Write-command-output-to-our-stderr.patch
 Patch12:        emitter.patch
 
 # Build fixes
+Patch13:        Fixup-compatibility-of-mozbuild-with-Python-3.10.patch
 Patch14:        init_patch.patch
 # TODO: Check with mozilla for cause of these fails and re-enable spidermonkey compile time checks if needed
 Patch15:        spidermonkey_checks_disable.patch
@@ -115,7 +116,7 @@ pushd ../..
 %patch10 -p1
 
 %patch12 -p1
-
+%patch13 -p1
 %patch14 -p1
 %patch15 -p1
 
@@ -272,6 +273,9 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Tue Jul 13 2021 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.12.0-2
+- Fixup compatibility of mozbuild with Python 3.10
+
 * Tue Jul 13 2021 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.12.0-1
 - Update to 78.12.0
 
