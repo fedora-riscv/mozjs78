@@ -24,7 +24,7 @@
 
 Name:           mozjs%{major}
 Version:        78.12.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -273,6 +273,9 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Thu Jul 22 2021 Fedora Release Engineering <releng@fedoraproject.org> - 78.12.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
 * Tue Jul 13 2021 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.12.0-2
 - Fixup compatibility of mozbuild with Python 3.10
 
