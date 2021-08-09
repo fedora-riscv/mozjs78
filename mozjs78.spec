@@ -23,8 +23,8 @@
 %endif
 
 Name:           mozjs%{major}
-Version:        78.12.0
-Release:        3%{?dist}
+Version:        78.13.0
+Release:        1%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -273,6 +273,9 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Mon Aug 09 2021 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.13.0-1
+- Update to 78.13.0
+
 * Thu Jul 22 2021 Fedora Release Engineering <releng@fedoraproject.org> - 78.12.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
