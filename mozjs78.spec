@@ -24,7 +24,7 @@
 
 Name:           mozjs%{major}
 Version:        78.15.0
-Release:        7%{?dist}
+Release:        7.rv64%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -67,6 +67,11 @@ Patch30:        FixSharedArray.diff
 # https://bugzilla.mozilla.org/show_bug.cgi?id=1663863
 Patch31:        0002-D89554-autoconf1.diff
 Patch32:        0003-D94538-autoconf2.diff
+
+# RISC-V
+# From: https://github.com/felixonmars/archriscv-packages/commit/0f7a00418fa19f63422786e32beca7500fb7d41c
+Patch40:        0001-feature-riscv64-support-from-Debian-and-clang.patch
+Patch41:        tests-skip-some-tests-on-rv64.patch
 
 BuildRequires:  cargo
 BuildRequires:  clang-devel
@@ -135,6 +140,11 @@ pushd ../..
 
 %ifarch s390x
 %patch18 -p1
+%endif
+
+%ifarch riscv64
+%patch40 -p1
+%patch41 -p1
 %endif
 
 # Fixes for ppc64 and s390x, there is no need to keep it in ifarch here since mozilla tests support ifarch conditions
@@ -283,6 +293,9 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 2400 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Thu May 19 2022 Liu Yang <yanliu@redhat.com> - 78.15.0-7.rv64
+- Get riscv64 support from Arch linux RISC-V.
+
 * Mon Aug 01 2022 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.15.0-7
 - Rebuilt for ICU 71.1
 
