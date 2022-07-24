@@ -30,7 +30,7 @@
 
 Name:           mozjs%{major}
 Version:        78.15.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -52,6 +52,8 @@ Patch13:        Fixup-compatibility-of-mozbuild-with-Python-3.10.patch
 Patch14:        init_patch.patch
 # TODO: Check with mozilla for cause of these fails and re-enable spidermonkey compile time checks if needed
 Patch15:        spidermonkey_checks_disable.patch
+# Python 3.11 compat
+Patch16:        0001-Python-Build-Use-r-instead-of-rU-file-read-modes.patch
 
 # armv7 fixes
 Patch17:        definitions_for_user_vfp.patch
@@ -128,6 +130,7 @@ pushd ../..
 %patch13 -p1
 %patch14 -p1
 %patch15 -p1
+%patch16 -p1
 
 %ifarch armv7hl
 # Include definitions for user vfp on armv7 as it causes the compilation to fail without them
@@ -286,6 +289,9 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Sun Jul 24 2022 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.15.0-5
+- Fixup Python 3.11 build
+
 * Thu Jul 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 78.15.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
 
