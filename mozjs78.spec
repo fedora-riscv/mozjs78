@@ -6,12 +6,6 @@
 # Require tests to pass?
 %global require_tests     1
 
-# Linking fails on armv7hl when using bundled icu, use system one for it, there are bunch of more test failures
-# TODO: Examine the failures/maybe switch all arches to system-icu
-%ifarch armv7hl
-%global require_tests     0
-%endif
-
 %if 0%{?build_with_lto}
 # LTO is default since F33 and F32 package is backported as is, so no LTO there
 %else
@@ -30,12 +24,15 @@
 
 Name:           mozjs%{major}
 Version:        78.15.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
 URL:            https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey
 Source0:        https://ftp.mozilla.org/pub/firefox/releases/%{version}esr/source/firefox-%{version}esr.source.tar.xz
+
+# Known failures with system libicu
+Source1:        known_failures.txt
 
 # Patches from mozjs68, rebased for mozjs78:
 Patch01:        fix-soname.patch
@@ -71,9 +68,6 @@ Patch30:        FixSharedArray.diff
 Patch31:        0002-D89554-autoconf1.diff
 Patch32:        0003-D94538-autoconf2.diff
 
-%ifarch armv7hl
-BuildRequires:  libicu-devel
-%endif
 BuildRequires:  cargo
 BuildRequires:  clang-devel
 BuildRequires:  gcc
@@ -83,6 +77,7 @@ BuildRequires:  make
 %if !0%{?rhel}
 BuildRequires:  nasm
 %endif
+BuildRequires:  libicu-devel
 BuildRequires:  llvm
 BuildRequires:  llvm-devel
 BuildRequires:  rust
@@ -154,6 +149,9 @@ pushd ../..
 
 # Copy out the LICENSE file
 cp LICENSE js/src/
+
+# Copy out file containing known test failures with system libicu
+cp %{SOURCE1} js/src/
 popd
 
 # Remove zlib directory (to be sure using system version)
@@ -181,11 +179,7 @@ export LINKFLAGS="%{?__global_ldflags}"
 export PYTHON="%{__python3}"
 
 %configure \
-%ifnarch armv7hl
-  --without-system-icu \
-%else
   --with-system-icu \
-%endif
   --with-system-zlib \
   --disable-tests \
   --disable-strip \
@@ -263,16 +257,16 @@ ln -s libmozjs-%{major}.so.0 %{buildroot}%{_libdir}/libmozjs-%{major}.so
 %check
 # Run SpiderMonkey tests
 %if 0%{?require_tests}
-PYTHONPATH=tests/lib %{__python3} tests/jstests.py -d -s -t 1800 --no-progress --wpt=disabled ../../js/src/dist/bin/js%{major}
+PYTHONPATH=tests/lib %{__python3} tests/jstests.py -d -s -t 2400 --exclude-file=known_failures.txt --no-progress --wpt=disabled ../../js/src/dist/bin/js%{major}
 %else
-PYTHONPATH=tests/lib %{__python3} tests/jstests.py -d -s -t 1800 --no-progress --wpt=disabled ../../js/src/dist/bin/js%{major} || :
+PYTHONPATH=tests/lib %{__python3} tests/jstests.py -d -s -t 2400 --exclude-file=known_failures.txt --no-progress --wpt=disabled ../../js/src/dist/bin/js%{major} || :
 %endif
 
 # Run basic JIT tests
 %if 0%{?require_tests}
-PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress ../../js/src/dist/bin/js%{major} basic
+PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 2400 --no-progress ../../js/src/dist/bin/js%{major} basic
 %else
-PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress ../../js/src/dist/bin/js%{major} basic || :
+PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 2400 --no-progress ../../js/src/dist/bin/js%{major} basic || :
 %endif
 
 %ldconfig_scriptlets
@@ -289,6 +283,9 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 1800 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
+* Mon Aug 01 2022 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.15.0-6
+- Switch to system-icu everywhere
+
 * Sun Jul 24 2022 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.15.0-5
 - Fixup Python 3.11 build
 
