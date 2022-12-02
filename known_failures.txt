@@ -14,11 +14,13 @@ non262/Intl/DateTimeFormat/format.js
 non262/Intl/DateTimeFormat/format_timeZone.js
 non262/Intl/DisplayNames/region.js
 non262/Intl/DisplayNames/language.js
+non262/Intl/Locale/likely-subtags.js
 non262/Intl/Locale/likely-subtags-generated.js
 non262/Intl/Date/toLocaleDateString_timeZone.js
 non262/Intl/Date/toLocaleString_timeZone.js
 non262/Intl/DateTimeFormat/related-year.js
 non262/Intl/DateTimeFormat/japanese-gannen-year.js
+non262/Intl/DateTimeFormat/timeZone_backward_links.js
 non262/Intl/Date/toLocaleTimeString_timeZone.js
 test262/built-ins/RegExp/property-escapes/generated/ID_Continue.js
 test262/built-ins/RegExp/property-escapes/generated/Bidi_Mirrored.js
@@ -116,3 +118,4 @@ test262/built-ins/RegExp/property-escapes/generated/Variation_Selector.js
 test262/built-ins/RegExp/property-escapes/generated/Script_Extensions_-_Inherited.js
 test262/built-ins/RegExp/property-escapes/generated/Changes_When_Uppercased.js
 test262/built-ins/RegExp/property-escapes/generated/General_Category_-_Open_Punctuation.js
+test262/intl402/Locale/prototype/minimize/removing-likely-subtags-first-adds-likely-subtags.js
