@@ -24,7 +24,7 @@
 
 Name:           mozjs%{major}
 Version:        78.15.0
-Release:        7.rv64%{?dist}
+Release:        10.rv64%{?dist}
 Summary:        SpiderMonkey JavaScript library
 
 License:        MPLv2.0 and MPLv1.1 and BSD and GPLv2+ and GPLv3+ and LGPLv2+ and AFL and ASL 2.0
@@ -293,8 +293,17 @@ PYTHONPATH=tests/lib %{__python3} jit-test/jit_test.py -s -t 2400 --no-progress 
 %{_includedir}/mozjs-%{major}/
 
 %changelog
-* Thu May 19 2022 Liu Yang <yanliu@redhat.com> - 78.15.0-7.rv64
+* Sat May 13 2023 Liu Yang <yanliu@redhat.com> - 78.15.0-10.rv64
 - Get riscv64 support from Arch linux RISC-V.
+
+* Thu Jan 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 78.15.0-10
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
+
+* Sat Dec 31 2022 Pete Walter <pwalter@fedoraproject.org> - 78.15.0-9
+- Rebuild for ICU 72
+
+* Fri Dec 02 2022 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.15.0-8
+- Add few more test exceptions
 
 * Mon Aug 01 2022 Frantisek Zatloukal <fzatlouk@redhat.com> - 78.15.0-7
 - Rebuilt for ICU 71.1
